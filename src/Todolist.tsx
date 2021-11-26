@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {FilterValuesType} from './App';
-import {ChangeEvent, KeyboardEvent} from "react";
 import {Button} from "./components/Button";
 import {Input} from "./components/Input";
 import NewButton from "./components/NewButton";
