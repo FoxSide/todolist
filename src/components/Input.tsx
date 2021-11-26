@@ -2,13 +2,23 @@ import React from "react";
 import {ChangeEvent, KeyboardEvent} from "react";
 
 type InputPropsType = {
-  value: string
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void
-  onKeyPress: (event: KeyboardEvent<HTMLInputElement>) => void
+  title: string
+  setTitle: (title: string) => void
+  addTask: (title: string) => void
 }
 
-export const Input = (props: InputPropsType) => {
+export const Input = ({title, setTitle, addTask, ...props}: InputPropsType) => {
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.currentTarget.value)
+  }
+  const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      addTask(title)
+      setTitle('')
+    }
+  }
+
   return (
-    <input value={props.value} onChange={props.onChange} onKeyPress={props.onKeyPress}/>
+    <input value={title} onChange={onChangeHandler} onKeyPress={onKeyPressHandler}/>
   )
 }
