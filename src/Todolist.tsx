@@ -28,8 +28,10 @@ export function Todolist(props: PropsType) {
     props.changeFilter(value)
   }
   const callBackHandlerNewButton= () => {
-    props.addTask(title)
-    setTitle('')
+    if(title.trim().length > 0) {
+      props.addTask(title)
+      setTitle('')
+    }
   }
 
   return <div>

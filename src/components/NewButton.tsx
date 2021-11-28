@@ -7,7 +7,7 @@ type NewButtonPropsType = {
 
 const NewButton = ({name, callBack, ...props}:NewButtonPropsType) => {
   const onClickHandler = () => {
-    callBack()
+     callBack()
   }
   return (
       <button onClick={onClickHandler}>{name}</button>

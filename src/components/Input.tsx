@@ -12,10 +12,14 @@ export const Input = ({title, setTitle, addTask, ...props}: InputPropsType) => {
     setTitle(event.currentTarget.value)
   }
   const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      addTask(title)
-      setTitle('')
+    if (title.trim().length > 0) {
+      if (event.key === 'Enter') {
+        addTask(title)
+        setTitle('')
+      }
     }
+
+
   }
 
   return (
