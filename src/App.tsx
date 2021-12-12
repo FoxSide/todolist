@@ -30,8 +30,8 @@ function App() {
   const todoListId_2 = v1()
 
   const [todoLists, setTodolists] = useState<Array<TodoListType>>([
-    {id: todoListId_1, title: 'What to learn', filter: 'all'},
-    {id: todoListId_2, title: 'What to buy', filter: 'all'}
+    {id: todoListId_1, title: 'What to Learn', filter: 'all'},
+    {id: todoListId_2, title: 'What to Buy', filter: 'all'}
   ])
   const [tasks, setTasks] = useState<TasksStateType>({
     [todoListId_1]: [
@@ -88,20 +88,20 @@ function App() {
   const todoListComponents = todoLists.map(tl => {
     let tasksForRender = getTasksForRender(tl)
     return (
-  <TodoList
-    key={tl.id}
-    id={tl.id}
-    title={tl.title}
-    tasks={tasksForRender}
-    filter={tl.filter}
-    addTask={addTask}
-    removeTask={removeTask}
-    changeFilter={changeFilter}
-    changeTaskStatus={changeTaskStatus}
-    removeTodoList={removeTodoList}
-  />
-)
-})
+      <TodoList
+        key={tl.id}
+        id={tl.id}
+        title={tl.title}
+        tasks={tasksForRender}
+        filter={tl.filter}
+        addTask={addTask}
+        removeTask={removeTask}
+        changeFilter={changeFilter}
+        changeTaskStatus={changeTaskStatus}
+        removeTodoList={removeTodoList}
+      />
+    )
+  })
 
   //UI:
   return (
