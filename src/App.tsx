@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import TodoList from "./TodoList";
 import {v1} from "uuid";
+import {AddItemForm} from "./AddItemForm";
 
 // Create
 // Read
@@ -62,7 +63,7 @@ function App() {
       isDone: false
     }
     const copyState = {...tasks}
-    copyState[todoListId] = [...tasks[todoListId], newTask]
+    copyState[todoListId] = [newTask, ...tasks[todoListId]]
     setTasks(copyState)
   }
   const changeTaskStatus = (taskID: string, isDone: boolean, todoListId: string) => {
@@ -72,6 +73,13 @@ function App() {
   }
   const removeTodoList = (todoListId: string) => {
     setTodolists(todoLists.filter(tl => tl.id !== todoListId))
+  }
+  const changeTodoListTitle = (newTitle: string, id: string) => {
+    const todolist = todoLists.find(tl => tl.id === id)
+    if (todolist) {
+      todolist.title = newTitle
+      setTodolists([...todoLists])
+    }
   }
 
   const getTasksForRender = (todoList: TodoListType) => {
@@ -84,6 +92,13 @@ function App() {
         return tasks[todoList.id]
     }
   }
+
+  const changeTaskTitle = (taskID: string, newTitle: string, todoListId: string) => {
+    const copyState = {...tasks}
+    copyState[todoListId] = tasks[todoListId].map(t => t.id === taskID ? {...t, title: newTitle} : t)
+    setTasks(copyState)
+  }
+
 
   const todoListComponents = todoLists.map(tl => {
     let tasksForRender = getTasksForRender(tl)
@@ -99,13 +114,30 @@ function App() {
         changeFilter={changeFilter}
         changeTaskStatus={changeTaskStatus}
         removeTodoList={removeTodoList}
+        changeTaskTitle={changeTaskTitle}
+        changeTodoListTitle={changeTodoListTitle}
       />
     )
   })
+  const addTodoList = (title: string) => {
+    const todolist: TodoListType = {
+      id: v1(),
+      title: title,
+      filter: 'all'
+    }
+    setTodolists([todolist, ...todoLists])
+    setTasks({
+      ...tasks,
+      [todolist.id]: []
+    })
+  }
 
-  //UI:
   return (
     <div className="App">
+      <div>
+        <h3>Enter task name</h3>
+        <AddItemForm addItem={addTodoList}/>
+      </div>
       {todoListComponents}
     </div>
   );
