@@ -2,6 +2,8 @@ import React, {ChangeEvent} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditebleSpan} from "./EditebleSpan";
+import {Button, ButtonGroup, Checkbox, IconButton, ListItem} from "@material-ui/core";
+import {CheckBox, Delete, HighlightOff} from "@material-ui/icons";
 
 type PropsType = {
   title: string
@@ -22,7 +24,7 @@ function TodoList(props: PropsType) {
   const setAllFilterValue = () => props.changeFilter("all", props.id)
   const setActiveFilterValue = () => props.changeFilter("active", props.id)
   const setCompletedFilterValue = () => props.changeFilter("completed", props.id)
-  const getBtnClass = (filter: FilterValuesType) => props.filter === filter ? "active" : "";
+  const getBtnClass = (filter: FilterValuesType) => props.filter === filter ? "secondary" : "primary";
 
   const tasksJSX = props.tasks.map(task => {
     const getClasses = () => task.isDone ? "is-done" : "";
@@ -34,15 +36,20 @@ function TodoList(props: PropsType) {
       props.changeTaskTitle(task.id, newValue, props.id)
 
     return (
-      <li key={task.id} className={getClasses()}>
-        <input
-          type="checkbox"
-          checked={task.isDone}
-          onChange={changeStatus}
-        />
+      <ListItem
+        key={task.id}
+        className={getClasses()}
+        style={{
+          display: 'flex',
+          justifyContent:'space-between'
+        }}
+      >
+        <Checkbox checked={task.isDone} onChange={changeStatus} color={'primary'} size={'small'}/>
         <EditebleSpan title={task.title} onChange={changeStatusHandler}/>
-        <button onClick={removeTask}>x</button>
-      </li>
+        <IconButton onClick={removeTask} size={'small'}>
+          <HighlightOff/>
+        </IconButton>
+      </ListItem>
     )
   })
 
@@ -57,28 +64,42 @@ function TodoList(props: PropsType) {
   }
 
   return (
-    <div>
-      <h3>
+    <div style={{
+      width: '280px'
+    }}>
+      <h3 style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems:'center'
+      }}>
         <EditebleSpan title={props.title} onChange={changeTodoListTitle}/>
-        <button onClick={removeTodoList}>x</button>
+        <IconButton onClick={removeTodoList} size={'small'}>
+          <Delete/>
+        </IconButton>
       </h3>
       <AddItemForm addItem={addTask}/>
-      <ul>
         {tasksJSX}
-      </ul>
       <div>
-        <button
-          className={getBtnClass("all")}
-          onClick={setAllFilterValue}>All
-        </button>
-        <button
-          className={getBtnClass("active")}
-          onClick={setActiveFilterValue}>Active
-        </button>
-        <button
-          className={getBtnClass("completed")}
-          onClick={setCompletedFilterValue}>Completed
-        </button>
+        <ButtonGroup
+          size={"small"}
+          variant={"contained"}
+          color={"primary"}
+          disableElevation
+          fullWidth
+        >
+          <Button
+            color={getBtnClass("all")}
+            onClick={setAllFilterValue}>All
+          </Button>
+          <Button
+            color={getBtnClass("active")}
+            onClick={setActiveFilterValue}>Active
+          </Button>
+          <Button
+            color={getBtnClass("completed")}
+            onClick={setCompletedFilterValue}>Completed
+          </Button>
+        </ButtonGroup>
       </div>
     </div>
   )
