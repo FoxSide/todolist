@@ -17,7 +17,7 @@ export type TaskType = {
 }
 export type FilterValuesType = "all" | "active" | "completed"
 
-type TodoListType = {
+export type TodoListType = {
   id: string
   title: string
   filter: FilterValuesType
@@ -82,6 +82,18 @@ function App() {
       setTodolists([...todoLists])
     }
   }
+  const addTodoList = (title: string) => {
+    const todolist: TodoListType = {
+      id: v1(),
+      title: title,
+      filter: 'all'
+    }
+    setTodolists([todolist, ...todoLists])
+    setTasks({
+      ...tasks,
+      [todolist.id]: []
+    })
+  }
 
   const getTasksForRender = (todoList: TodoListType) => {
     switch (todoList.filter) {
@@ -123,18 +135,6 @@ function App() {
       </Grid>
     )
   })
-  const addTodoList = (title: string) => {
-    const todolist: TodoListType = {
-      id: v1(),
-      title: title,
-      filter: 'all'
-    }
-    setTodolists([todolist, ...todoLists])
-    setTasks({
-      ...tasks,
-      [todolist.id]: []
-    })
-  }
 
   return (
     <div className="App">
