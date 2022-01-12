@@ -3,7 +3,7 @@ import {FilterValuesType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditebleSpan} from "./EditebleSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, ListItem} from "@material-ui/core";
-import {CheckBox, Delete, HighlightOff} from "@material-ui/icons";
+import {Delete, HighlightOff} from "@material-ui/icons";
 
 type PropsType = {
   title: string
@@ -19,7 +19,7 @@ type PropsType = {
   changeTodoListTitle: (todolistId: string, newTitle: string) => void
 }
 
-function TodoList(props: PropsType) {
+function Todolist(props: PropsType) {
 
   const setAllFilterValue = () => props.changeFilter("all", props.id)
   const setActiveFilterValue = () => props.changeFilter("active", props.id)
@@ -105,4 +105,4 @@ function TodoList(props: PropsType) {
   )
 }
 
-export default TodoList;
+export default Todolist;
