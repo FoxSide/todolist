@@ -46,7 +46,7 @@ function AppWithReducers() {
       {id: v1(), title: "REACT", isDone: false}
     ],
     [todoListId_2]: [
-      {id: v1(), title: "Milk", isDone: true},
+      {id: v1(), title: "Meet", isDone: true},
       {id: v1(), title: "Bear", isDone: true},
       {id: v1(), title: "Bread", isDone: false}
     ]
