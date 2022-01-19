@@ -1,9 +1,10 @@
-import React, {ChangeEvent} from 'react';
+import React, {useCallback} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditebleSpan} from "./EditebleSpan";
-import {Button, ButtonGroup, Checkbox, IconButton, ListItem} from "@material-ui/core";
-import {Delete, HighlightOff} from "@material-ui/icons";
+import {Button, ButtonGroup, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+import {Task} from "./task";
 
 type PropsType = {
   title: string
@@ -19,49 +20,42 @@ type PropsType = {
   changeTodoListTitle: (todolistId: string, newTitle: string) => void
 }
 
-function Todolist(props: PropsType) {
+export const Todolist = React.memo((props: PropsType) => {
+  const setAllFilterValue = useCallback(() => props.changeFilter("all", props.id), [props.id, props.changeFilter])
+  const setActiveFilterValue = useCallback(() => props.changeFilter("active", props.id), [props.id, props.changeFilter])
+  const setCompletedFilterValue = useCallback(() => props.changeFilter("completed", props.id), [props.id, props.changeFilter])
 
-  const setAllFilterValue = () => props.changeFilter("all", props.id)
-  const setActiveFilterValue = () => props.changeFilter("active", props.id)
-  const setCompletedFilterValue = () => props.changeFilter("completed", props.id)
   const getBtnClass = (filter: FilterValuesType) => props.filter === filter ? "secondary" : "primary";
 
-  const tasksJSX = props.tasks.map(task => {
-    const getClasses = () => task.isDone ? "is-done" : "";
-    const changeStatus = (e: ChangeEvent<HTMLInputElement>) =>
-      props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)
-    const removeTask = () => props.removeTask(task.id, props.id)
+  let tasksForTodolist = props.tasks
+  if (props.filter === 'active') {
+    tasksForTodolist = props.tasks.filter(t => !t.isDone)
+  }
+  if (props.filter === 'completed') {
+    tasksForTodolist = props.tasks.filter(t => t.isDone)
+  }
 
-    const changeStatusHandler = (newValue: string) =>
-      props.changeTaskTitle(task.id, newValue, props.id)
-
+  const tasksJSX = tasksForTodolist.map(task => {
     return (
-      <ListItem
-        key={task.id}
-        className={getClasses()}
-        style={{
-          display: 'flex',
-          justifyContent:'space-between'
-        }}
-      >
-        <Checkbox checked={task.isDone} onChange={changeStatus} color={'primary'} size={'small'}/>
-        <EditebleSpan title={task.title} onChange={changeStatusHandler}/>
-        <IconButton onClick={removeTask} size={'small'}>
-          <HighlightOff/>
-        </IconButton>
-      </ListItem>
+      <Task key={task.id}
+            task={task}
+            removeTask={props.removeTask}
+            todolistId={props.id}
+            changeTaskStatus={props.changeTaskStatus}
+            changeTaskTitle={props.changeTaskTitle}/>
     )
   })
 
-  const addTask = (title: string) => {
+  const addTask = useCallback((title: string) => {
     props.addTask(title, props.id)
-  }
-  const removeTodoList = () => {
+  }, [props.addTask, props.id])
+  const removeTodoList = useCallback(() => {
     props.removeTodoList(props.id)
-  }
-  const changeTodoListTitle = (newTitle: string) => {
+  }, [props.removeTodoList, props.id])
+  const changeTodoListTitle = useCallback((newTitle: string) => {
     props.changeTodoListTitle(newTitle, props.id)
-  }
+  }, [props.changeTodoListTitle, props.id])
+
 
   return (
     <div style={{
@@ -70,7 +64,7 @@ function Todolist(props: PropsType) {
       <h3 style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
       }}>
         <EditebleSpan title={props.title} onChange={changeTodoListTitle}/>
         <IconButton onClick={removeTodoList} size={'small'}>
@@ -78,7 +72,7 @@ function Todolist(props: PropsType) {
         </IconButton>
       </h3>
       <AddItemForm addItem={addTask}/>
-        {tasksJSX}
+      {tasksJSX}
       <div>
         <ButtonGroup
           size={"small"}
@@ -103,6 +97,4 @@ function Todolist(props: PropsType) {
       </div>
     </div>
   )
-}
-
-export default Todolist;
+})
