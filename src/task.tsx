@@ -31,7 +31,7 @@ export const Task = React.memo(({task, removeTask, todolistId, changeTaskStatus,
         className={getClasses()}
         style={{
           display: 'flex',
-          justifyContent: 'space-between'
+          justifyContent: 'start'
         }}
       >
         <Checkbox checked={task.isDone} onChange={changeStatus} color={'primary'} size={'small'}/>
