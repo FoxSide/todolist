@@ -32,7 +32,7 @@ export const todolistApi = {
     return instanse.get<Array<TodolistType>>('todo-lists')
   },
   createTodo() {
-    return instanse.post<BaseResponseType<{ item: TodolistType }>>('todo-lists', {title: "newTodolist"})
+    return instanse.post<BaseResponseType<{ item: TodolistType }>>('todo-lists', {title: "newTodolist!"})
   },
   deleteTodo(todolistId: string) {
     return instanse.delete<BaseResponseType>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`)
